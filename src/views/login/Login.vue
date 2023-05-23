@@ -1,31 +1,32 @@
 <template>
   <ion-page>
-    <div class="form">
-      <div class="form-container">
-        <form>
+
+    <ion-col>
+      <img src="./assets/etec-logo.svg" alt="">
+    </ion-col>
+
+    <ion-col>
+        <form class="form-container">
           <h1>Login</h1>
 
-          <ion-item>
-            <ion-label>RM</ion-label>
-            <ion-input type="text" v-model="form.rm"/>
-          </ion-item>
+          <ion-label class="label">RM</ion-label>
+          <ion-col>  
+            <ion-input class="input" :clear-input="true" type="text" v-model="form.rm"/>
+          </ion-col>
 
-          <ion-item>
-            <ion-label>Senha</ion-label>
-            <ion-input type="password" v-model="form.senha"/>
-          </ion-item>
-
+          <ion-label class="label">Senha</ion-label>
+          <ion-col>
+            <ion-input class="input" :clear-input="true" type="password" v-model="form.senha"/>
+          </ion-col>
         </form>
-      </div>
+    </ion-col>
 
-      <ion-button class="button" type="submit" @click="enviarLogin()">Entrar</ion-button>
-    </div>
-    
+    <ion-button class="button" type="submit" @click="enviarLogin()">Entrar</ion-button>
   </ion-page>
 </template>
 
 <script>
-import { IonPage, IonToolbar, IonTitle, IonButtons, IonButton, IonInput } from '@ionic/vue';
+import { IonPage, IonToolbar, IonTitle, IonButtons, IonButton, IonInput, IonCol } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import axios from 'axios';
 
@@ -37,25 +38,19 @@ export default defineComponent ({
     IonTitle,
     IonButtons,
     IonButton,
-    IonInput
+    IonInput,
+    IonCol
   },
   data: () => ({
     form: {
       rm: '',
       senha: ''
     },
-    dados: []
   }),
-  methods: {
-    enviarLogin() {
-      console.log(this.form)
-    }
-  },
   mounted() {
     axios.get('http://localhost:3000/api/contas')
     .then(response => {
-      this.dados = response.data
-      console.log(response.data)
+      this.form = response.data
     })
     .catch(error => {
       console.log(error);
@@ -72,19 +67,35 @@ export default defineComponent ({
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  padding-bottom: 20px;
+  padding-bottom: 50%;
 }
 
 .form-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  width: 40%;
+  margin: auto;
+}
+
+h1 {
+  text-align: end;
+  margin-bottom: 2rem;
+}
+
+/* .label {
+  margin-left: 1rem;
+} */
+
+.input {
+  margin-bottom: 2rem;
+  border: 2px solid red;
+  padding: 0;
+  height: 0;
 }
 
 .button {
+  width: auto;
+  margin: auto;
   margin-top: auto;
+  margin-bottom: 10%;
 }
 
 </style>
