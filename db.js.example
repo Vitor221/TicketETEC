@@ -1,0 +1,10 @@
+const mysql = require('mysql2'); // Dar o comando no terminal "npm install mysql2"
+
+const connection = mysql.createConnection({ // Criando a conexão com o banco de dados
+  host: 'localhost',
+  user: '',
+  password: '',
+  database: '',
+});
+
+module.exports = connection; 
