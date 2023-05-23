@@ -22,7 +22,24 @@
   </ion-page>
 </template>
 
-<script setup lang="ts">
+<script>
 import { IonTabBar, IonTabButton, IonTabs, IonLabel, IonIcon, IonPage, IonRouterOutlet } from '@ionic/vue';
 import { ellipse, square, triangle } from 'ionicons/icons';
+import { defineComponent } from 'vue';
+
+export default defineComponent ({
+  name: 'TabsPage',
+  components: {
+    IonTabBar, 
+    IonTabButton, 
+    IonTabs, 
+    IonLabel, 
+    IonIcon, 
+    IonPage, 
+    IonRouterOutlet,
+    ellipse, 
+    square, 
+    triangle
+  }
+})
 </script>
