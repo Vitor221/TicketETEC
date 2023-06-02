@@ -1,0 +1,1 @@
+A api php deve ser colocada no xampp antes de dar inicio

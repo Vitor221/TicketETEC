@@ -12,14 +12,15 @@
 
           <ion-item>
             <ion-label>Senha</ion-label>
-            <ion-input type="password" v-model="form.senha"/>
+            <ion-input type="password"  v-model="form.senha"/>
           </ion-item>
-
+          
         </form>
       </div>
 
       <ion-button class="button" type="submit" @click="enviarLogin()">Entrar</ion-button>
     </div>
+    
     
   </ion-page>
 </template>
@@ -37,30 +38,44 @@ export default defineComponent ({
     IonTitle,
     IonButtons,
     IonButton,
-    IonInput
+    IonInput,
   },
   data: () => ({
     form: {
       rm: '',
       senha: ''
     },
-    dados: []
+    db: []
   }),
+  mounted() {
+        this.DadosPHP();
+    },
   methods: {
     enviarLogin() {
-      console.log(this.form)
-    }
+      const user = this.db.reduce((current, aluno) => {
+        if(aluno.cd_rm === this.form.rm && aluno.cd_senha === this.form.senha) {
+          return true;
+        }
+        return current;
+
+      }, false);
+      if(user = true) {
+        
+      };
+    },
+    DadosPHP() {
+        axios.get('http://localhost/Api-php/index.php')
+            .then(response => {
+            this.db = response.data;
+            // Aqui você pode usar os dados recebidos como desejar
+            })
+            .catch(error => {
+            console.error(error);
+            });
+        }
+   
   },
-  mounted() {
-    axios.get('http://localhost:3000/api/contas')
-    .then(response => {
-      this.dados = response.data
-      console.log(response.data)
-    })
-    .catch(error => {
-      console.log(error);
-    })
-  }
+  
   
 })
 </script>
