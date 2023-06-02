@@ -59,9 +59,7 @@ export default defineComponent ({
         return current;
 
       }, false);
-      if(this.user = true) {
-        
-      };
+      if(this.user = true);
     },
     DadosPHP() {
         axios.get('http://localhost/Api-php/index.php')
