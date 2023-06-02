@@ -59,7 +59,7 @@ export default defineComponent ({
         return current;
 
       }, false);
-      if(user = true) {
+      if(this.user = true) {
         
       };
     },
