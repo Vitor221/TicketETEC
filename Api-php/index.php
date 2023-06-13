@@ -7,7 +7,7 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 $host = "localhost";
 $user = "root";
 $pass = "root";
-$dbname = "crud";
+$dbname = "db_ticket";
 $port = 3306;
 
     //Conexão com a porta
@@ -19,7 +19,7 @@ $port = 3306;
     }
 
     // Consulta para recuperar os dados do banco de dados
-    $sql = "SELECT * FROM tb_aluno";
+    $sql = "SELECT * FROM tb_login";
     $result = $conn->query($sql);
 
     // Verificar se há resultados
