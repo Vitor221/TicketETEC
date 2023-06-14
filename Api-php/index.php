@@ -19,7 +19,8 @@ $port = 3306;
     }
 
     // Consulta para recuperar os dados do banco de dados
-    $sql = "SELECT * FROM tb_login";
+    $sql = "SELECT * FROM tb_login, tb_atendente";
+    
     $result = $conn->query($sql);
 
     // Verificar se há resultados

@@ -1,8 +1,7 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from 'vue';
+import App from './App.vue';
 import router from './router/router';
-import axios from 'axios';
-import cors from 'cors';
+
 
 import { IonicVue } from '@ionic/vue';
 
@@ -24,6 +23,10 @@ import '@ionic/vue/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap';
+
 
 
 
