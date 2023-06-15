@@ -46,12 +46,13 @@ create table if not exists tb_login(
 cd_login int not null auto_increment,
 cd_email_login varchar(45),
 cd_senha_login varchar (20),
+ds_tipo varchar(10),
 cd_acesso_login int,
 constraint pk_login
 primary key(cd_login))
 engine=InnoDB;
 -- Inserção nas tb_login
-INSERT INTO tb_login VALUES (1, 'zaratrusca@gmail.com', '124144mxczx.A', 1);
+INSERT INTO tb_login VALUES (1, 'zaratrusca@gmail.com', '321','Aluno', 1),(2, 'jamesclear@gmail.com', '123','Atendente', 1);
 
 create table if not exists tb_integrantes(
 cd_integrantes int not null auto_increment,
@@ -90,12 +91,15 @@ status_atendente varchar (50),
 cd_email_atendente varchar(45),
 cd_senha_atendente varchar (20),
 cd_cpf varchar (13),
+cd_login int,
 nm_atendente varchar (75),
 constraint pk_atendente
-primary key(cd_atendente))
+primary key(cd_atendente)
+foreign key(cd_login)
+references tb_login(cd_login))
 engine=InnoDB;
 -- Inserção nas tb_atendente
-INSERT INTO tb_atendente VALUES (1, 'ativo', 'jamesclear@gmail.com', 'JS2382d.', '76022010861', 'James Clear');
+INSERT INTO tb_atendente VALUES (1, 'ativo', 'jamesclear@gmail.com', 'JS2382d.', '76022010861', 2, 'James Clear');
 
   create table if not exists tb_descricao_ticket(
     cd_descricao_ticket int not null auto_increment,

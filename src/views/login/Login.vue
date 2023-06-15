@@ -3,6 +3,7 @@
     <div class="form row">
       <div class="form-container">
         <form>
+          {{ db }}
           <h1>Entrar</h1>
           <ion-item>
             <ion-input label="E-mail" type="text" v-model="form.email" required></ion-input>
@@ -50,13 +51,17 @@ export default defineComponent ({
     },
   methods: {
     enviarLogin() {
-      
-    },
+            this.db.reduce((current, usuario) => {
+            if(usuario.cd_email_login === this.form.email && usuario.cd_senha_login === this.form.password ) {
+            return this.$router.push('/cliente');
+            }
+            return current;
+        },);
+    }},
     DadosPHP() {
         axios.get('http://localhost/Api-php/index.php')
             .then(response => {
             this.db = response.data;
-            // Aqui você pode usar os dados recebidos como desejar
             })
             .catch(error => {
             console.error(error);
@@ -66,7 +71,7 @@ export default defineComponent ({
   },
   
   
-})
+)
 </script>
 
 <style scoped>
