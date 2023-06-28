@@ -31,34 +31,19 @@
             </ion-item>
 
             <ion-item>
-              <ion-label position="stacked">Data de Término</ion-label>
-              <ion-datetime v-model="dataTermino" display-format="DD/MM/YYYY" picker-format="DD/MM/YYYY" class="form-datetime"></ion-datetime>
-            </ion-item>
-
-            <ion-item>
-              <ion-label position="stacked">Hora de Início</ion-label>
-              <ion-datetime v-model="horaInicio" display-format="HH:mm" picker-format="HH:mm" class="form-datetime"></ion-datetime>
-            </ion-item>
-
-            <ion-item>
-              <ion-label position="stacked">Hora de Término</ion-label>
-              <ion-datetime v-model="horaTermino" display-format="HH:mm" picker-format="HH:mm" class="form-datetime"></ion-datetime>
-            </ion-item>
-
-            <ion-item>
               <ion-label position="stacked">Gravidade do Ticket</ion-label>
               <ion-select v-model="gravidade" class="form-select">
-                <ion-select-option value="alta">Alta</ion-select-option>
-                <ion-select-option value="media">Média</ion-select-option>
-                <ion-select-option value="baixa">Baixa</ion-select-option>
+                <ion-select-option value="Alta">Alta</ion-select-option>
+                <ion-select-option value="Média">Média</ion-select-option>
+                <ion-select-option value="Baixa">Baixa</ion-select-option>
               </ion-select>
             </ion-item>
 
             <ion-item>
               <ion-label position="stacked">Status</ion-label>
               <ion-select v-model="status" class="form-select">
-                <ion-select-option value="em-andamento">Em Andamento</ion-select-option>
-                <ion-select-option value="resolvido">Resolvido</ion-select-option>
+                <ion-select-option value="Em andamento">Em Andamento</ion-select-option>
+                <ion-select-option value="Resolvido">Resolvido</ion-select-option>
               </ion-select>
             </ion-item>
           </ion-list>
@@ -72,12 +57,17 @@
     <ion-content class="ion-padding">
       <!-- Exibir os tickets -->
       <ion-list>
-        <ion-item v-for="ticket in tickets" :key="ticket.id" style="margin-top: 3%">
-          <ion-label><strong>Descrição:</strong> {{ ticket.ds_descricao_ticket }}</ion-label>
-          <ion-label><strong>Data da publicação:</strong> {{ formatarData(ticket.hr_data_inicio) }}</ion-label>
-          <ion-label><strong>Gravidade: </strong>{{ ticket.ds_gravidade_ticket }}</ion-label>
-          <ion-label><strong>Status: </strong>{{ ticket.ds_status_ticket }}</ion-label>
-        </ion-item>
+        <ion-label style="width: 50%; margin: auto; font-size: 2em; color: #fd4a4a; font-weight: 700;" v-if="tickets == ''">Nenhum Ticket</ion-label>
+        <ion-label v-else>
+          <ion-item v-for="ticket in tickets" :key="ticket.cd_ticket" style="margin-top: 3%">
+            <ion-label><strong>Descrição:</strong> {{ ticket.ds_descricao_ticket }}</ion-label>
+            <ion-label><strong>Data da publicação:</strong> {{ formatarData(ticket.hr_data_inicio) }}</ion-label>
+            <ion-label><strong>Gravidade: </strong>{{ ticket.ds_gravidade_ticket }}</ion-label>
+            <ion-label><strong>Status: </strong>{{ ticket.ds_status_ticket }}</ion-label>
+
+            <ion-button color="danger" @click="deletarTicket(ticket.cd_ticket)">Deletar</ion-button>
+          </ion-item>
+        </ion-label>
       </ion-list>
     </ion-content>
   </ion-page>
@@ -128,16 +118,6 @@ export default defineComponent ({
       this.showModal = false;
     },
     saveTicket() {
-      // Aqui você pode implementar a lógica para salvar o ticket
-      // Exemplo de exibição dos valores preenchidos:
-      console.log('Descrição:', this.descricao);
-      console.log('Data de Início:', this.dataInicio);
-      console.log('Data de Término:', this.dataTermino);
-      console.log('Hora de Início:', this.horaInicio);
-      console.log('Hora de Término:', this.horaTermino);
-      console.log('Gravidade:', this.gravidade);
-      console.log('Status:', this.status);
-
       axios.post('http://localhost:3000/api/ticket', {
         descricao: this.descricao,
         dataInicio: this.dataInicio,
@@ -152,7 +132,6 @@ export default defineComponent ({
         }
       })
           .then(response => {
-            console.log(response.data);
             this.fetchTickets();
             this.closeModal();
           }).catch(error => {
@@ -172,6 +151,19 @@ export default defineComponent ({
       const formatandoData = moment(dateTime).locale('pt-BR').format('DD/MM/YYYY [às] HH:mm');
 
       return formatandoData;
+    },
+    deletarTicket(ticketId) {
+      axios.delete(`http://localhost:3000/api/ticket/${ticketId}`)
+          .then(response => {
+            const index = this.tickets.findIndex(ticket => ticket.cd_ticket === ticketId);
+
+            if(index !== -1) {
+              this.tickets.splice(index, 1);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          })
     }
   },
   mounted() {

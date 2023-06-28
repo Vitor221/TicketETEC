@@ -74,6 +74,21 @@ app.get('/api/tickets', (req, res) => {
   })
 });
 
+app.delete('/api/ticket/:id', (req, res) => {
+  const ticketId = req.params.id;
+
+  const sql = 'DELETE FROM tb_ticket WHERE cd_ticket = ?';
+
+  db.query(sql, [ticketId], (error, result) => {
+    if(error) {
+      console.log(error);
+      res.json({ success: false, message: 'Erro ao excluir o ticket' });
+    } else {
+      res.json({ success: true, message: 'Ticket excluído com sucesso'});
+    }
+  })
+})
+
 
 app.listen(3000, () => {
   console.log('Servidor backend em execução na porta localhost:3000/');
