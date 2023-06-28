@@ -45,15 +45,7 @@ const routes = [
       {
         path: 'tab1',
         component: () => import('@/views/cliente/Tab1PageCliente.vue')
-      },
-      {
-        path: 'tab2',
-        component: () => import('@/views/cliente/Tab2PageCliente.vue')
-      },
-      {
-        path: 'tab3',
-        component: () => import('@/views/cliente/Tab3PageCliente.vue')
-      },
+      }
     ]
   }
 ]

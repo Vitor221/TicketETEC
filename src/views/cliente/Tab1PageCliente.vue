@@ -68,6 +68,18 @@
         </form>
       </ion-content>
     </ion-modal>
+
+    <ion-content class="ion-padding">
+      <!-- Exibir os tickets -->
+      <ion-list>
+        <ion-item v-for="ticket in tickets" :key="ticket.id" style="margin-top: 3%">
+          <ion-label><strong>Descrição:</strong> {{ ticket.ds_descricao_ticket }}</ion-label>
+          <ion-label><strong>Data da publicação:</strong> {{ formatarData(ticket.hr_data_inicio) }}</ion-label>
+          <ion-label><strong>Gravidade: </strong>{{ ticket.ds_gravidade_ticket }}</ion-label>
+          <ion-label><strong>Status: </strong>{{ ticket.ds_status_ticket }}</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
   </ion-page>
 </template>
 
@@ -75,6 +87,7 @@
 import { IonContent, IonHeader, IonToolbar, IonTitle, IonModal, IonButton, IonPage, IonTextarea, IonDatetime, IonList, IonItem, IonLabel, IonSelect, IonSelectOption } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import axios from 'axios';
+import moment from 'moment';
 
 export default defineComponent ({
   name: 'Tab1PageCliente',
@@ -103,7 +116,8 @@ export default defineComponent ({
       horaInicio: '',
       horaTermino: '',
       gravidade: '',
-      status: ''
+      status: '',
+      tickets: []
     };
   },
   methods: {
@@ -112,14 +126,6 @@ export default defineComponent ({
     },
     closeModal() {
       this.showModal = false;
-      // Limpar os campos ao fechar o modal
-      this.descricao = '';
-      this.dataInicio = '';
-      this.dataTermino = '';
-      this.horaInicio = '';
-      this.horaTermino = '';
-      this.gravidade = '';
-      this.status = '';
     },
     saveTicket() {
       // Aqui você pode implementar a lógica para salvar o ticket
@@ -140,14 +146,36 @@ export default defineComponent ({
         horaTermino: this.horaTermino,
         gravidade: this.gravidade,
         status: this.status
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
       })
           .then(response => {
             console.log(response.data);
+            this.fetchTickets();
             this.closeModal();
           }).catch(error => {
             console.log(error);
       })
+    },
+    fetchTickets() {
+      axios.get('http://localhost:3000/api/tickets')
+          .then(response => {
+            this.tickets = response.data;
+          })
+          .catch(error => {
+            console.log(error);
+          })
+    },
+    formatarData(dateTime) {
+      const formatandoData = moment(dateTime).locale('pt-BR').format('DD/MM/YYYY [às] HH:mm');
+
+      return formatandoData;
     }
+  },
+  mounted() {
+    this.fetchTickets();
   }
 })
 </script>

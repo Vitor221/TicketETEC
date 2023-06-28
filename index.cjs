@@ -49,9 +49,9 @@ app.post('/api/ticket', (req, res) => {
     status
   } = req.body;
 
-  const sql = 'INSERT INTO tb_ticket (ds_descricao_ticket, dt_data_inicio, dt_data_fim, hr_data_inicio, hr_data_fim, ds_gravidade_ticket, ds_status_ticket) VALUES (?, ?, ?, ?, ?, ?, ?)';
+  const sql = 'INSERT INTO tb_ticket (ds_descricao_ticket, dt_data_inicio, ds_gravidade_ticket, ds_status_ticket) VALUES (?, ?, ?, ?)';
 
-  db.query(sql, [descricao, dataInicio, dataTermino, horaInicio, horaTermino, gravidade, status], (error, results) => {
+  db.query(sql, [descricao, dataInicio, gravidade, status], (error, results) => {
     if(error) {
       console.log(error);
       res.json({ success: false, message: 'Erro no servidor'});
@@ -59,7 +59,20 @@ app.post('/api/ticket', (req, res) => {
       res.json({ success: true, message: 'Ticket criado com sucesso'});
     }
   })
-})
+});
+
+app.get('/api/tickets', (req, res) => {
+  const sql = 'SELECT * FROM tb_ticket';
+
+  db.query(sql, (error, results) => {
+    if(error) {
+      console.log(error);
+      res.json({ success: false, message: 'Erro no servidor'})
+    } else {
+      res.json(results);
+    }
+  })
+});
 
 
 app.listen(3000, () => {
